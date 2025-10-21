@@ -1,3 +1,11 @@
 <resources>
-    <string name="app_name">EWallet</string>
+    <string name="app_name">ASR</string>
+    <string name="auth_title">Авторизация</string>
+    <string name="auth_subtitle">Для авторизации введите номер телефона</string>
+    <string name="phone_number">Номер телефона</string>
+    <string name="login">Войти</string>
+
+    <string name="terms_html">
+        При входе вы принимаете &lt;a href="https://example.com/terms"&gt;условия&lt;/a&gt;
+    </string>
 </resources>

@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="brandGreen">#35B45B</color>
+    <color name="textSecondary">#6B7280</color>
+    <color name="inputFill">#F2F4F7</color>
+    <color name="disabledGreen">#9FD8B2</color>
 </resources>
