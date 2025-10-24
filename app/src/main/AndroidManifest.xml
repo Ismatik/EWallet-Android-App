@@ -1,42 +1,29 @@
-<<<<<<< Original
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    package="com.example.ewallet">
 
     <application
         android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:icon="@mipmap/ic_launcher"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.EWallet" >
+        android:theme="@style/Theme.EWallet">
+
+        <!-- OTP screen -->
         <activity
-            android:name=".MainActivity"
+            android:name=".Next_Activity"
             android:exported="false" />
+
+        <!-- Launcher screen -->
         <activity
             android:name=".MainActivity"
-            android:exported="true"
-            tools:ignore="DuplicateActivity">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-    </application>
 
+    </application>
 </manifest>
-=======
-
-    <manifest xmlns:android ="http://schemas.android.com/apk/res/android"
-    >
-    <application>
-    <activity android:name ="com.example.ewallet.Next_Activity"
-    android:exported="false"
-
-     />
-    </application>
-    </manifest>
-    >>>>>>> Added

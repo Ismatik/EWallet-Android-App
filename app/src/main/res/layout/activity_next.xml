@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:paddingStart="24dp"
-    android:paddingEnd="24dp"
-    tools:context=".NextActivity">
+    android:paddingEnd="24dp">
+<!--    tools:context=".NextActivity">-->
 
   <!-- Title -->
   <TextView
@@ -121,7 +121,7 @@
         android:layout_weight="1"
         android:background="@drawable/bg_otp_box"
         android:gravity="center"
-        android:imeOptions="done"
+        android:imeOptions="actionDone"
         android:inputType="number"
         android:maxLength="1"
         android:textSize="20sp"
