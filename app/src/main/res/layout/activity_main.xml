@@ -16,10 +16,14 @@
         android:layout_width="64dp"
         android:layout_height="24dp"
         android:layout_marginTop="88dp"
+        android:paddingEnd="30dp"
+        android:scaleType="fitStart"
+        android:adjustViewBounds="false"
         android:contentDescription="@string/app_name"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/ic_logo_asr" />
+        app:srcCompat="@drawable/ic_logo_asr"
+        tools:ignore="RtlSymmetry" />
 
     <TextView
         android:id="@+id/title"
@@ -48,13 +52,20 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Phone input -->
+    <!--        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"-->
+
     <com.google.android.material.textfield.TextInputLayout
+
+
+        style = "@style/Widget.Asr.TextInputLayout.Filled"
         android:id="@+id/phone_til"
-        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+
+
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="@string/phone_number"
+
         app:boxBackgroundMode="filled"
         app:boxBackgroundColor="@color/input_box_fill"
         app:boxStrokeColor="@color/input_box_stroke"
@@ -116,3 +127,5 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+
+
