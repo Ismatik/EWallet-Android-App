@@ -6,6 +6,13 @@
     <string name="login">Войти</string>
 
     <string name="terms_html">
-        При входе вы принимаете &lt;a href="https://example.com/terms"&gt;условия&lt;/a&gt;
+<!--        При входе вы принимаете &lt;a href="https://example.com/terms"&gt;условия&lt;/a&gt;-->
+        При входе вы принимаете <![CDATA[<a href="">условия</a>]]>
     </string>
+    
+    <string name="continue_label">Продолжить</string>
+    <string name="verify_title">Подтверждение</string>
+    <string name="verify_subtitle">Введите 6-значный код из SMS</string>
+    <string name="verify_button">Подтвердить</string>
+    <string name="verify_resend_in_60">Отправить код ещё раз (59s)</string>
 </resources>
