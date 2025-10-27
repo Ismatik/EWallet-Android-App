@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="ShapeAppearanceOverlay.Asr.Pill" parent="ShapeAppearance.Material3.Corner.None">
-        <item name="cornerFamily">rounded</item>
+<!--        <item name="cornerFamily">rounded</item>-->
         <item name="cornerSize">28dp</item>
     </style>
     <style name="Widget.Asr.TextInputLayout.Filled" parent="Widget.Material3.TextInputLayout.FilledBox.Dense">
@@ -11,4 +11,5 @@
         <item name="boxStrokeWidth">0dp</item>
         <item name="boxStrokeWidthFocused">0dp</item>
     </style>
+
 </resources>

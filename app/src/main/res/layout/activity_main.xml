@@ -85,7 +85,7 @@
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@android:color/transparent"
+            android:background="@android:color/grey_background"
             android:inputType="phone"
             android:maxLines="1"
             android:paddingStart="16dp"
