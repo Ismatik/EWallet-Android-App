@@ -60,17 +60,10 @@
         style = "@style/Widget.Asr.TextInputLayout.Filled"
         android:id="@+id/phone_til"
 
-
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:hint="@string/phone_number"
-
-        app:boxBackgroundMode="filled"
-        app:boxBackgroundColor="@color/input_box_fill"
-        app:boxStrokeColor="@color/input_box_stroke"
-        app:boxStrokeWidth="1dp"
-        app:boxStrokeWidthFocused="2dp"
 
         app:boxCornerRadiusTopStart="28dp"
         app:boxCornerRadiusTopEnd="28dp"
