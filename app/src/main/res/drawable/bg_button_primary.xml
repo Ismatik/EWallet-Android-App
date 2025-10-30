@@ -1,10 +1,27 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8"?>
 <ripple xmlns:android="http://schemas.android.com/apk/res/android"
-    android:color="?attr/colorControlHighlight"
-    >
+    android:color="@color/rippleGreen">  <!-- fixed ripple, not theme-based -->
+
+    <!-- Disabled -->
+    <item android:state_enabled="false">
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp"/>
+            <solid android:color="@color/brandGreen_disabled"/>
+        </shape>
+    </item>
+
+    <!-- Pressed -->
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <corners android:radius="28dp"/>
+            <solid android:color="@color/brandGreenAlt"/>
+        </shape>
+    </item>
+
+    <!-- Default -->
     <item>
         <shape android:shape="rectangle">
-            <corners android:radius="16dp"/>
+            <corners android:radius="28dp"/>
             <solid android:color="@color/brandGreen"/>
         </shape>
     </item>

@@ -1,20 +1,13 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.EWallet" parent="Theme.Material3.DayNight.NoActionBar">
-        <item name="android:windowBackground">@color/white</item>
-        <item name="textInputStyle">@style/Widget.Asr.TextInputLayout.Filled</item>
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="colorPrimary">@color/brandGreen</item>
         <item name="android:textColorLink">@color/brandGreen</item>
 
+        <!-- Safe everywhere -->
         <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/white</item>
-        <item name="android:windowLightNavigationBar">true</item>
-        <item name="android:navigationBarDividerColor">@android:color/transparent</item>
-        <item name="android:enforceNavigationBarContrast">false</item>
-
+        <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
 
-    <style name="Theme.EWallet" parent="Base.Theme.EWallet" />
+    <style name="Theme.EWallet" parent="Base.Theme.EWallet"/>
 </resources>

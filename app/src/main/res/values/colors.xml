@@ -13,9 +13,11 @@
 <!-- Brand -->
     <color name="brandGreen">#49B05A</color>        <!-- primary (button/link) -->
     <color name="brandGreenAlt">#39B980</color>     <!-- secondary green seen on other screens -->
-    <color name="brandBlue">#0456A2</color>         <!-- accent blue present in flows -->
+<!--    <color name="brandBlue">#0456A2</color>         &lt;!&ndash; accent blue present in flows &ndash;&gt;-->
+    <color name="brandGreen_disabled">#9FD8B2</color>  <!-- or any lightened green -->
+    <color name="rippleGreen">#1A39B980</color>       <!-- ~10% alpha of brandGreenAlt -->
 
-<!-- Text -->
+    <!-- Text -->
     <color name="textPrimary">#18191C</color>       <!-- main body text from mocks -->
     <color name="textSecondary">#88888A</color>     <!-- secondary/labels -->
     <color name="hintColor">#9AA4B2</color>         <!-- softer input placeholder -->
