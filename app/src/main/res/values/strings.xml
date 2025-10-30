@@ -13,6 +13,7 @@
     <string name="continue_label">Продолжить</string>
     <string name="verify_title">Подтвердите номер телефона</string>
     <string name="verify_subtitle">Отправили код на номер для подтверждения %1$s</string>
+    <string name="verify_subtitle">Отправили код подтверждения на номер %1$s</string>
     <string name="verify_button">Подтвердить</string>
     <string name="verify_button_loading">Подтверждаем…</string>
     <string name="login_sending">Отправляем…</string>

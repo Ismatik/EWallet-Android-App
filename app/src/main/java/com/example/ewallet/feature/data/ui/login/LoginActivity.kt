@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -37,6 +38,17 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    private val viewModel: LoginViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+                    return LoginViewModel(ServiceLocator.sendCodeUseCase) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -50,6 +62,9 @@ class LoginActivity : AppCompatActivity() {
         binding.terms.movementMethod = LinkMovementMethod.getInstance()
 
         binding.phone.addTextChangedListener(phoneTextWatcher)
+        binding.phone.doAfterTextChanged { text ->
+            viewModel.onPhoneChanged(text?.toString().orEmpty())
+        }
         binding.phone.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.btnLogin.isEnabled) {
                 viewModel.sendCode()
@@ -139,5 +154,7 @@ class LoginActivity : AppCompatActivity() {
     }
     companion object {
         private const val MAX_PHONE_LENGTH = 9
+    }
+        }
     }
 }
