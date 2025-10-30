@@ -79,6 +79,7 @@
         app:boxStrokeColor="@android:color/transparent"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
+        app:prefixText="+992 "
         >
 
         <com.google.android.material.textfield.TextInputEditText
@@ -118,11 +119,12 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginBottom="24dp"
-        android:text="@string/login"
+        android:text="@string/continue_label"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="16sp"
         android:background="@drawable/bg_button_primary"
+        android:backgroundTint="@color/brandGreen"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
