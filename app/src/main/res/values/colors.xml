@@ -33,7 +33,7 @@
 <!-- Misc UI -->
     <color name="divider">#EBEDEC</color>
     <color name="successBg">#ECF6EE</color>         <!-- pale mint used on some cards -->
-
+    <color name="arrow_back">#18191C</color>        <!-- Arrow back -->
 <!-- Utility -->
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>

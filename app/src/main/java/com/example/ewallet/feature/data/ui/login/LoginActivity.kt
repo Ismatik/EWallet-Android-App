@@ -1,14 +1,15 @@
-package com.example.ewallet
+package com.example.ewallet.feature.data.ui.login
 
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.LinkMovementMethod
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
+import com.example.ewallet.R
+import com.example.ewallet.feature.data.ui.otp.OtpActivity
 import com.example.ewallet.databinding.ActivityMainBinding
 
-
-class MainActivity : AppCompatActivity() {
+class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
@@ -24,7 +25,7 @@ class MainActivity : AppCompatActivity() {
         )
         binding.terms.movementMethod = LinkMovementMethod.getInstance()
         binding.btnLogin.setOnClickListener {
-            startActivity(Intent(this, Next_Activity::class.java))
+            startActivity(Intent(this, OtpActivity::class.java))
         }
     }
 }

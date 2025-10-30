@@ -12,12 +12,14 @@
 
         <!-- OTP screen -->
         <activity
-            android:name=".Next_Activity"
-            android:exported="false" />
+            android:name=".feature.data.ui.otp.OtpActivity"
+            android:exported="false"
+            android:parentActivityName=".feature.data.ui.login.LoginActivity"
+            />
 
         <!-- Launcher screen -->
         <activity
-            android:name=".MainActivity"
+            android:name=".feature.data.ui.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

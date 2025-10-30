@@ -7,7 +7,19 @@
     android:background="@color/white"
     android:paddingStart="24dp"
     android:paddingEnd="24dp">
-<!--    tools:context=".NextActivity">-->
+
+
+  <ImageButton
+      android:id="@+id/btnBackToActivityMain"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:src="@drawable/button_arrow_back"
+      android:background="?attr/selectableItemBackgroundBorderless"
+      android:contentDescription="@string/back"
+      app:layout_constraintTop_toTopOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      android:layout_marginStart="0dp"
+      android:layout_marginTop="47dp" />
 
   <!-- Title -->
   <TextView
@@ -132,7 +144,7 @@
       android:id="@+id/tvResend"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="12dp"
+      android:layout_marginTop="16dp"
       android:text="@string/verify_resend_in_60"
       android:textColor="@color/textSecondary"
       android:textSize="13sp"
