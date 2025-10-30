@@ -109,6 +109,13 @@ class OtpActivity : AppCompatActivity() {
                                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                             }
                             startActivity(intent)
+                            Toast.makeText(
+                                this@OtpActivity,
+                                getString(R.string.verify_success),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            hideKeyboard()
+                            setResult(RESULT_OK)
                             finish()
                         }
 
@@ -220,6 +227,117 @@ class OtpActivity : AppCompatActivity() {
         return String.format(Locale.getDefault(), "%02d:%02d", minutes, secs)
     }
 
+        }
+    }
+
+    private fun setupOtpInputs() {
+        otpInputs.forEachIndexed { index, editText ->
+            editText.doAfterTextChanged { text ->
+                if (isUpdatingInputs) return@doAfterTextChanged
+
+                val value = text?.toString().orEmpty()
+                if (value.length > 1) {
+                    val lastChar = value.last().toString()
+                    isUpdatingInputs = true
+                    editText.setText(lastChar)
+                    editText.setSelection(lastChar.length)
+                    isUpdatingInputs = false
+                }
+
+                if (value.isNotEmpty() && index < otpInputs.lastIndex) {
+                    otpInputs[index + 1].requestFocus()
+                }
+
+                dispatchCodeChanged()
+            }
+
+            editText.setOnKeyListener { _, keyCode, event ->
+                if (event.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_DEL && editText.text.isNullOrEmpty() && index > 0) {
+                    val previous = otpInputs[index - 1]
+                    isUpdatingInputs = true
+                    previous.setText("")
+                    isUpdatingInputs = false
+                    previous.requestFocus()
+                    previous.setSelection(previous.text?.length ?: 0)
+                    dispatchCodeChanged()
+                    true
+                } else {
+                    false
+                }
+            }
+        }
+
+        otpInputs.last().setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                if (viewModel.uiState.value.isComplete) {
+                    hideKeyboard()
+                    viewModel.submit()
+                    true
+                } else {
+                    false
+                }
+            } else {
+                false
+            }
+        }
+    }
+
+    private fun syncInputsWithState(code: String) {
+        val current = otpInputs.joinToString(separator = "") { it.text?.toString().orEmpty() }
+        if (current == code) return
+
+        isUpdatingInputs = true
+        otpInputs.forEachIndexed { index, editText ->
+            val char = code.getOrNull(index)?.toString() ?: ""
+            editText.setText(char)
+            editText.setSelection(editText.text?.length ?: 0)
+        }
+        }
+    }
+
+    private fun syncInputsWithState(code: String) {
+        val current = otpInputs.joinToString(separator = "") { it.text?.toString().orEmpty() }
+        if (current == code) return
+
+        isUpdatingInputs = true
+        otpInputs.forEachIndexed { index, editText ->
+            val char = code.getOrNull(index)?.toString() ?: ""
+            editText.setText(char)
+            editText.setSelection(editText.text?.length ?: 0)
+        }
+        isUpdatingInputs = false
+
+        val nextIndex = code.length.coerceAtMost(otpInputs.lastIndex)
+        otpInputs[nextIndex].requestFocus()
+    }
+
+    private fun dispatchCodeChanged() {
+        if (isUpdatingInputs) return
+        val code = otpInputs.joinToString(separator = "") { it.text?.toString().orEmpty() }
+        viewModel.onCodeChanged(code)
+    }
+
+    private fun updateResendState(state: OtpViewModel.UiState) {
+        val isAvailable = state.isResendAvailable && !state.isResendLoading
+        val text = when {
+            state.isResendLoading -> getString(R.string.verify_resend_loading)
+            state.isResendAvailable -> getString(R.string.verify_resend_available)
+            else -> getString(R.string.verify_resend_in, formatRemainingTime(state.remainingSeconds))
+        }
+        binding.tvResend.text = text
+        binding.tvResend.isEnabled = isAvailable
+        binding.tvResend.isClickable = isAvailable
+        binding.tvResend.alpha = if (isAvailable) 1f else 0.6f
+        binding.tvResend.setTextColor(getColorCompat(if (isAvailable) R.color.brandGreen else R.color.textSecondary))
+    }
+
+    private fun formatRemainingTime(seconds: Int): String {
+        val safeSeconds = seconds.coerceAtLeast(0)
+        val minutes = safeSeconds / 60
+        val secs = safeSeconds % 60
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, secs)
+    }
+
     private fun formatPhoneForDisplay(raw: String): String {
         val digits = raw.filter { it.isDigit() }
         if (digits.isEmpty()) return raw
@@ -249,6 +367,39 @@ class OtpActivity : AppCompatActivity() {
         }
 
         return builder.toString().trim()
+
+    private fun dispatchCodeChanged() {
+        if (isUpdatingInputs) return
+        val code = otpInputs.joinToString(separator = "") { it.text?.toString().orEmpty() }
+        viewModel.onCodeChanged(code)
+    }
+
+    private fun updateResendState(state: OtpViewModel.UiState) {
+        val isAvailable = state.isResendAvailable && !state.isResendLoading
+        val text = when {
+            state.isResendLoading -> getString(R.string.verify_resend_loading)
+            state.isResendAvailable -> getString(R.string.verify_resend_available)
+            else -> getString(R.string.verify_resend_in, formatRemainingTime(state.remainingSeconds))
+        }
+        binding.tvResend.text = text
+        binding.tvResend.isEnabled = isAvailable
+        binding.tvResend.isClickable = isAvailable
+        binding.tvResend.alpha = if (isAvailable) 1f else 0.6f
+        binding.tvResend.setTextColor(getColorCompat(if (isAvailable) R.color.brandGreen else R.color.textSecondary))
+    }
+
+    private fun formatRemainingTime(seconds: Int): String {
+        val safeSeconds = seconds.coerceAtLeast(0)
+        val minutes = safeSeconds / 60
+        val secs = safeSeconds % 60
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, secs)
+    }
+
+    private fun formatPhoneForDisplay(raw: String): String {
+        val digits = raw.filter { it.isDigit() }
+        if (digits.isEmpty()) return raw
+        val grouped = digits.chunked(3).joinToString(" ")
+        return "+$grouped"
     }
 
     private fun hideKeyboard() {

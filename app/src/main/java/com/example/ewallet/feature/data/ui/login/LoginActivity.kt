@@ -9,6 +9,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
 import androidx.core.widget.addTextChangedListener
+import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,18 @@ class LoginActivity : AppCompatActivity() {
     private var isFormattingPhone = false
 
     private val loginViewModel: LoginViewModel by viewModels {
+    private val viewModel: LoginViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+                    return LoginViewModel(ServiceLocator.sendCodeUseCase) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+    }
+
+    private val viewModel: LoginViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
                 if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
@@ -60,11 +73,13 @@ class LoginActivity : AppCompatActivity() {
         }
         binding.btnLogin.setOnClickListener {
             loginViewModel.sendCode()
+            viewModel.sendCode()
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 loginViewModel.uiState.collect { state ->
+                viewModel.uiState.collect { state ->
                     binding.btnLogin.isEnabled = state.isValid && !state.isLoading
                     binding.btnLogin.text = if (state.isLoading) {
                         getString(R.string.login_sending)
@@ -81,6 +96,7 @@ class LoginActivity : AppCompatActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 loginViewModel.events.collect { event ->
+                viewModel.events.collect { event ->
                     when (event) {
                         is LoginViewModel.Event.CodeSent -> {
                             startActivity(OtpActivity.createIntent(this@LoginActivity, event.phone))
@@ -139,5 +155,33 @@ class LoginActivity : AppCompatActivity() {
     }
     companion object {
         private const val MAX_PHONE_LENGTH = 9
+    }
+            viewModel.onPhoneChanged(digits)
+        }
+    }
+
+    private fun formatPhoneInput(digits: String): String {
+        if (digits.isEmpty()) return ""
+
+        val groups = intArrayOf(3, 2, 2, 2)
+        val builder = StringBuilder()
+        var index = 0
+        for (group in groups) {
+            if (index >= digits.length) break
+            val end = (index + group).coerceAtMost(digits.length)
+            if (builder.isNotEmpty()) builder.append(' ')
+            builder.append(digits.substring(index, end))
+            index = end
+        }
+        if (index < digits.length) {
+            if (builder.isNotEmpty()) builder.append(' ')
+            builder.append(digits.substring(index))
+        }
+        return builder.toString()
+    }
+    companion object {
+        private const val MAX_PHONE_LENGTH = 9
+    }
+        }
     }
 }

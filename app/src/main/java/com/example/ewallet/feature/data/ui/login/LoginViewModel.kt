@@ -37,6 +37,7 @@ class LoginViewModel(private val sendCode: SendCodeUseCase) : ViewModel() {
         _uiState.update {
             it.copy(
                 phone = normalized,
+                phone = value,
                 isValid = isValidPhone(normalized),
                 error = null
             )
@@ -47,6 +48,8 @@ class LoginViewModel(private val sendCode: SendCodeUseCase) : ViewModel() {
         val currentState = _uiState.value
         val digits = normalizePhone(currentState.phone)
         if (!isValidPhone(digits)) {
+        val normalized = normalizePhone(currentState.phone)
+        if (!isValidPhone(normalized)) {
             _uiState.update { it.copy(error = INVALID_PHONE_ERROR) }
             return
         }
@@ -59,6 +62,10 @@ class LoginViewModel(private val sendCode: SendCodeUseCase) : ViewModel() {
                 is Result.Success -> {
                     _uiState.update { it.copy(isLoading = false) }
                     _events.emit(Event.CodeSent(phoneWithCountry))
+            when (val res = sendCode(normalized)) {
+                is Result.Success -> {
+                    _uiState.update { it.copy(isLoading = false) }
+                    _events.emit(Event.CodeSent(normalized))
                 }
 
                 is Result.Error -> {
