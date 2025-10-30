@@ -22,6 +22,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.ewallet.R
 import com.example.ewallet.core.di.ServiceLocator
 import com.example.ewallet.databinding.ActivityNextBinding
+import com.example.ewallet.feature.data.ui.mainmenu.MainMenuActivity
 import kotlinx.coroutines.launch
 import java.util.Locale
 
@@ -103,6 +104,11 @@ class OtpActivity : AppCompatActivity() {
                 viewModel.events.collect { event ->
                     when (event) {
                         is OtpViewModel.Event.Verified -> {
+                            hideKeyboard()
+                            val intent = MainMenuActivity.createIntent(this@OtpActivity).apply {
+                                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            }
+                            startActivity(intent)
                             Toast.makeText(
                                 this@OtpActivity,
                                 getString(R.string.verify_success),
@@ -188,11 +194,81 @@ class OtpActivity : AppCompatActivity() {
             editText.setText(char)
             editText.setSelection(editText.text?.length ?: 0)
         }
+        }
+    }
+
+    private fun syncInputsWithState(code: String) {
+        val current = otpInputs.joinToString(separator = "") { it.text?.toString().orEmpty() }
+        if (current == code) return
+
+        isUpdatingInputs = true
+        otpInputs.forEachIndexed { index, editText ->
+            val char = code.getOrNull(index)?.toString() ?: ""
+            editText.setText(char)
+            editText.setSelection(editText.text?.length ?: 0)
+        }
         isUpdatingInputs = false
 
         val nextIndex = code.length.coerceAtMost(otpInputs.lastIndex)
         otpInputs[nextIndex].requestFocus()
     }
+
+    private fun dispatchCodeChanged() {
+        if (isUpdatingInputs) return
+        val code = otpInputs.joinToString(separator = "") { it.text?.toString().orEmpty() }
+        viewModel.onCodeChanged(code)
+    }
+
+    private fun updateResendState(state: OtpViewModel.UiState) {
+        val isAvailable = state.isResendAvailable && !state.isResendLoading
+        val text = when {
+            state.isResendLoading -> getString(R.string.verify_resend_loading)
+            state.isResendAvailable -> getString(R.string.verify_resend_available)
+            else -> getString(R.string.verify_resend_in, formatRemainingTime(state.remainingSeconds))
+        }
+        binding.tvResend.text = text
+        binding.tvResend.isEnabled = isAvailable
+        binding.tvResend.isClickable = isAvailable
+        binding.tvResend.alpha = if (isAvailable) 1f else 0.6f
+        binding.tvResend.setTextColor(getColorCompat(if (isAvailable) R.color.brandGreen else R.color.textSecondary))
+    }
+
+    private fun formatRemainingTime(seconds: Int): String {
+        val safeSeconds = seconds.coerceAtLeast(0)
+        val minutes = safeSeconds / 60
+        val secs = safeSeconds % 60
+        return String.format(Locale.getDefault(), "%02d:%02d", minutes, secs)
+    }
+
+    private fun formatPhoneForDisplay(raw: String): String {
+        val digits = raw.filter { it.isDigit() }
+        if (digits.isEmpty()) return raw
+
+        val (countryCode, nationalNumber) = if (digits.startsWith(COUNTRY_CODE_DIGITS)) {
+            COUNTRY_CODE_DIGITS to digits.removePrefix(COUNTRY_CODE_DIGITS)
+        } else {
+            digits.take(3) to digits.drop(3)
+        }
+
+        val builder = StringBuilder().append('+').append(countryCode)
+        if (nationalNumber.isNotEmpty()) builder.append(' ')
+
+        val groups = intArrayOf(3, 2, 2, 2)
+        var index = 0
+        for (group in groups) {
+            if (index >= nationalNumber.length) break
+            val end = (index + group).coerceAtMost(nationalNumber.length)
+            builder.append(nationalNumber.substring(index, end))
+            index = end
+            if (index < nationalNumber.length) builder.append(' ')
+        }
+
+        if (index < nationalNumber.length) {
+            if (builder.last() != ' ') builder.append(' ')
+            builder.append(nationalNumber.substring(index))
+        }
+
+        return builder.toString().trim()
 
     private fun dispatchCodeChanged() {
         if (isUpdatingInputs) return
@@ -238,6 +314,7 @@ class OtpActivity : AppCompatActivity() {
 
     companion object {
         const val EXTRA_PHONE = "extra_phone"
+        private const val COUNTRY_CODE_DIGITS = "992"
 
         fun createIntent(context: Context, phone: String): Intent {
             return Intent(context, OtpActivity::class.java).putExtra(EXTRA_PHONE, phone)

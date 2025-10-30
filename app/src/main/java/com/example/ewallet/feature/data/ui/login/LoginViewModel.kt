@@ -36,6 +36,7 @@ class LoginViewModel(private val sendCode: SendCodeUseCase) : ViewModel() {
         val normalized = normalizePhone(value)
         _uiState.update {
             it.copy(
+                phone = normalized,
                 phone = value,
                 isValid = isValidPhone(normalized),
                 error = null
@@ -45,6 +46,8 @@ class LoginViewModel(private val sendCode: SendCodeUseCase) : ViewModel() {
 
     fun sendCode() {
         val currentState = _uiState.value
+        val digits = normalizePhone(currentState.phone)
+        if (!isValidPhone(digits)) {
         val normalized = normalizePhone(currentState.phone)
         if (!isValidPhone(normalized)) {
             _uiState.update { it.copy(error = INVALID_PHONE_ERROR) }
@@ -54,6 +57,11 @@ class LoginViewModel(private val sendCode: SendCodeUseCase) : ViewModel() {
 
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true, error = null) }
+            val phoneWithCountry = withCountryCode(digits)
+            when (val res = sendCode(phoneWithCountry)) {
+                is Result.Success -> {
+                    _uiState.update { it.copy(isLoading = false) }
+                    _events.emit(Event.CodeSent(phoneWithCountry))
             when (val res = sendCode(normalized)) {
                 is Result.Success -> {
                     _uiState.update { it.copy(isLoading = false) }
@@ -70,10 +78,14 @@ class LoginViewModel(private val sendCode: SendCodeUseCase) : ViewModel() {
 
     private fun normalizePhone(input: String): String = input.filter { it.isDigit() }
 
+    private fun withCountryCode(digits: String): String =
+        if (digits.isEmpty()) digits else COUNTRY_CODE_PREFIX + digits
+
     private fun isValidPhone(phone: String): Boolean = phone.length >= MIN_PHONE_LENGTH
 
     companion object {
         private const val MIN_PHONE_LENGTH = 9
+        private const val COUNTRY_CODE_PREFIX = "+992"
         private const val INVALID_PHONE_ERROR = "Введите корректный номер"
         private const val GENERIC_ERROR = "Не удалось отправить код"
     }

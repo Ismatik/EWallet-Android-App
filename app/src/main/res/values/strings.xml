@@ -12,6 +12,7 @@
     
     <string name="continue_label">Продолжить</string>
     <string name="verify_title">Подтвердите номер телефона</string>
+    <string name="verify_subtitle">Отправили код на номер для подтверждения %1$s</string>
     <string name="verify_subtitle">Отправили код подтверждения на номер %1$s</string>
     <string name="verify_button">Подтвердить</string>
     <string name="verify_button_loading">Подтверждаем…</string>
@@ -21,4 +22,6 @@
     <string name="verify_resend_loading">Отправляем код…</string>
     <string name="verify_success">Номер подтверждён</string>
     <string name="otp_resend_success">Код отправлен повторно</string>
+    <string name="main_menu_title">Главное меню</string>
+    <string name="main_menu_placeholder">Экран главного меню появится здесь после интеграции с остальным функционалом.</string>
 </resources>

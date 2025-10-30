@@ -1,11 +1,14 @@
 package com.example.ewallet.feature.data.ui.login
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.text.method.LinkMovementMethod
 import android.view.inputmethod.EditorInfo
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.text.HtmlCompat
+import androidx.core.widget.addTextChangedListener
 import androidx.core.widget.doAfterTextChanged
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModel
@@ -22,6 +25,18 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private var isFormattingPhone = false
+
+    private val viewModel: LoginViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
+                    return LoginViewModel(ServiceLocator.sendCodeUseCase) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+    }
 
     private val viewModel: LoginViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -46,6 +61,7 @@ class LoginActivity : AppCompatActivity() {
         )
         binding.terms.movementMethod = LinkMovementMethod.getInstance()
 
+        binding.phone.addTextChangedListener(phoneTextWatcher)
         binding.phone.doAfterTextChanged { text ->
             viewModel.onPhoneChanged(text?.toString().orEmpty())
         }
@@ -91,6 +107,54 @@ class LoginActivity : AppCompatActivity() {
                     }
                 }
             }
+        }
+    }
+
+    private val phoneTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) = Unit
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) = Unit
+
+        override fun afterTextChanged(s: Editable?) {
+            if (isFormattingPhone) return
+
+            val digitsRaw = s?.toString().orEmpty().filter { it.isDigit() }
+            val digits = digitsRaw.take(MAX_PHONE_LENGTH)
+            val formatted = formatPhoneInput(digits)
+
+            if (formatted != s?.toString().orEmpty() || digitsRaw.length != digits.length) {
+                isFormattingPhone = true
+                binding.phone.setText(formatted)
+                binding.phone.setSelection(formatted.length)
+                isFormattingPhone = false
+            }
+
+            viewModel.onPhoneChanged(digits)
+        }
+    }
+
+    private fun formatPhoneInput(digits: String): String {
+        if (digits.isEmpty()) return ""
+
+        val groups = intArrayOf(3, 2, 2, 2)
+        val builder = StringBuilder()
+        var index = 0
+        for (group in groups) {
+            if (index >= digits.length) break
+            val end = (index + group).coerceAtMost(digits.length)
+            if (builder.isNotEmpty()) builder.append(' ')
+            builder.append(digits.substring(index, end))
+            index = end
+        }
+        if (index < digits.length) {
+            if (builder.isNotEmpty()) builder.append(' ')
+            builder.append(digits.substring(index))
+        }
+        return builder.toString()
+    }
+    companion object {
+        private const val MAX_PHONE_LENGTH = 9
+    }
         }
     }
 }
