@@ -10,6 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.EWallet">
 
+        <!-- Main menu -->
+        <activity
+            android:name=".feature.data.ui.mainmenu.MainMenuActivity"
+            android:exported="false" />
+
         <!-- OTP screen -->
         <activity
             android:name=".feature.data.ui.otp.OtpActivity"

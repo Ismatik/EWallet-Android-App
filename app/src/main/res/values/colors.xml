@@ -1,21 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--<resources>-->
-<!--    <color name="black">#FF000000</color>-->
-<!--    <color name="white">#FFFFFFFF</color>-->
-<!--    <color name="brandGreen">#35B45B</color>-->
-<!--    <color name="textSecondary">#6B7280</color>-->
-<!--    <color name="inputFill">#F2F4F7</color>-->
-<!--    <color name="disabledGreen">#9FD8B2</color>-->
-<!--</resources>-->
-
 
 <resources>
-<!-- Brand -->
-    <color name="brandGreen">#49B05A</color>        <!-- primary (button/link) -->
-    <color name="brandGreenAlt">#39B980</color>     <!-- secondary green seen on other screens -->
-<!--    <color name="brandBlue">#0456A2</color>         &lt;!&ndash; accent blue present in flows &ndash;&gt;-->
-    <color name="brandGreen_disabled">#9FD8B2</color>  <!-- or any lightened green -->
-    <color name="rippleGreen">#1A39B980</color>       <!-- ~10% alpha of brandGreenAlt -->
+    <!-- Brand -->
+    <color name="brandGreen">#0FBA5E</color>        <!-- primary (button/link) -->
+    <color name="brandGreenAlt">#0AA353</color>     <!-- secondary green seen on other screens -->
+    <color name="brandGreen_disabled">#B7E5C9</color>  <!-- or any lightened green -->
+    <color name="rippleGreen">#190AA353</color>       <!-- ~10% alpha of brandGreenAlt -->
 
     <!-- Text -->
     <color name="textPrimary">#18191C</color>       <!-- main body text from mocks -->
@@ -40,6 +30,8 @@
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="transparent">#00000000</color>
-    
+
     <color name="grey_background">#E8ECF0</color>
+    <color name="error">#FF3B30</color>
 </resources>
+

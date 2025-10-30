@@ -15,6 +15,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        vectorDrawables.useSupportLibrary = true
     }
 
     buildTypes {
@@ -37,9 +38,6 @@ android {
     buildFeatures{
         viewBinding = true
     }
-    defaultConfig {
-        vectorDrawables.useSupportLibrary = true
-    }
 }
 
 dependencies {
@@ -56,8 +54,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.2")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.2")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-//    this implementation is in libs.material
-//    implementation "com.google.android.material:material:1.9.0"
-//    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
 }
 

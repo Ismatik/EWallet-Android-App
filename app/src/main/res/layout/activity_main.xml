@@ -57,7 +57,6 @@
 
     <com.google.android.material.textfield.TextInputLayout
 
-        android:background="@drawable/round_input_design"
         android:id="@+id/phone_til"
 
         android:layout_width="match_parent"
@@ -79,13 +78,13 @@
         app:boxStrokeColor="@android:color/transparent"
         app:boxStrokeWidth="0dp"
         app:boxStrokeWidthFocused="0dp"
+        app:prefixText="+992 "
         >
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/phone"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            android:background="@drawable/round_input_design"
 
             android:inputType="phone"
             android:maxLines="1"
@@ -118,7 +117,7 @@
         android:layout_width="0dp"
         android:layout_height="56dp"
         android:layout_marginBottom="24dp"
-        android:text="@string/login"
+        android:text="@string/continue_label"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="16sp"
