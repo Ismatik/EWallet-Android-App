@@ -12,7 +12,15 @@
     
     <string name="continue_label">Продолжить</string>
     <string name="verify_title">Подтвердите номер телефона</string>
-    <string name="verify_subtitle">Отправили код подтверждения на номер +992 9999999</string>
+    <string name="verify_subtitle">Отправили код на номер для подтверждения %1$s</string>
     <string name="verify_button">Подтвердить</string>
-    <string name="verify_resend_in_60">Отправить код ещё раз (59s)</string>
+    <string name="verify_button_loading">Подтверждаем…</string>
+    <string name="login_sending">Отправляем…</string>
+    <string name="verify_resend_in">Отправить код ещё раз через %1$s</string>
+    <string name="verify_resend_available">Отправить код ещё раз</string>
+    <string name="verify_resend_loading">Отправляем код…</string>
+    <string name="verify_success">Номер подтверждён</string>
+    <string name="otp_resend_success">Код отправлен повторно</string>
+    <string name="main_menu_title">Главное меню</string>
+    <string name="main_menu_placeholder">Экран главного меню появится здесь после интеграции с остальным функционалом.</string>
 </resources>
