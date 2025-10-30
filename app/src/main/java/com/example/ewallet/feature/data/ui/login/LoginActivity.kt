@@ -27,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private var isFormattingPhone = false
 
+    private val loginViewModel: LoginViewModel by viewModels {
     private val viewModel: LoginViewModel by viewModels {
         object : ViewModelProvider.Factory {
             override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -62,23 +63,22 @@ class LoginActivity : AppCompatActivity() {
         binding.terms.movementMethod = LinkMovementMethod.getInstance()
 
         binding.phone.addTextChangedListener(phoneTextWatcher)
-        binding.phone.doAfterTextChanged { text ->
-            viewModel.onPhoneChanged(text?.toString().orEmpty())
-        }
         binding.phone.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE && binding.btnLogin.isEnabled) {
-                viewModel.sendCode()
+                loginViewModel.sendCode()
                 true
             } else {
                 false
             }
         }
         binding.btnLogin.setOnClickListener {
+            loginViewModel.sendCode()
             viewModel.sendCode()
         }
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginViewModel.uiState.collect { state ->
                 viewModel.uiState.collect { state ->
                     binding.btnLogin.isEnabled = state.isValid && !state.isLoading
                     binding.btnLogin.text = if (state.isLoading) {
@@ -95,6 +95,7 @@ class LoginActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
+                loginViewModel.events.collect { event ->
                 viewModel.events.collect { event ->
                     when (event) {
                         is LoginViewModel.Event.CodeSent -> {
@@ -129,6 +130,32 @@ class LoginActivity : AppCompatActivity() {
                 isFormattingPhone = false
             }
 
+            loginViewModel.onPhoneChanged(digits)
+        }
+    }
+
+    private fun formatPhoneInput(digits: String): String {
+        if (digits.isEmpty()) return ""
+
+        val groups = intArrayOf(3, 2, 2, 2)
+        val builder = StringBuilder()
+        var index = 0
+        for (group in groups) {
+            if (index >= digits.length) break
+            val end = (index + group).coerceAtMost(digits.length)
+            if (builder.isNotEmpty()) builder.append(' ')
+            builder.append(digits.substring(index, end))
+            index = end
+        }
+        if (index < digits.length) {
+            if (builder.isNotEmpty()) builder.append(' ')
+            builder.append(digits.substring(index))
+        }
+        return builder.toString()
+    }
+    companion object {
+        private const val MAX_PHONE_LENGTH = 9
+    }
             viewModel.onPhoneChanged(digits)
         }
     }
